@@ -455,5 +455,5 @@ divider=ctk.CTkFrame(root,width=1.5,fg_color="gray")
 divider.pack(side="left",fill="y")
 root.protocol("WM_DELETE_WINDOW",on_close)
 
-# looping thr window
+# looping the window
 root.mainloop()
