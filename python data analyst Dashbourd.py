@@ -448,7 +448,7 @@ ctk.CTkLabel(sidebar,text="Advance Dashbourd",font=("Bodoni MT Black",25)).pack(
 # sidebar tabs
 for name,tab in t_names:
     ctk.CTkButton(sidebar,text=name,font=default_font,command=lambda t=tab:show_page(t)).pack(pady=7,padx=10)
-show_page("insight")
+show_page("l_file")
 
 # border
 divider=ctk.CTkFrame(root,width=1.5,fg_color="gray")
