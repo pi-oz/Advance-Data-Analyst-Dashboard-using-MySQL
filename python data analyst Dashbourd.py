@@ -415,6 +415,7 @@ text3.pack(side="right")
 stats=ctk.CTkFrame(rightbar)
 pages["insight"]=stats
 stats_combo=ctk.CTkComboBox(stats,values=[])
+stats_combo.set("choose column to get insight")
 stats_combo.place(x=495,y=630)
 ctk.CTkButton(stats,text="Load Stats",command=statics,font=("Showcard Gothic",25)).place(x=487,y=660)
 statics=tk.Text(stats,wrap=tk.NONE)
