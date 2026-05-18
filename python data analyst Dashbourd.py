@@ -194,17 +194,17 @@ def scatter():
     try:
         x_col=x_axis.get()
         y_col=y_axis.get()
-        # if df[x_col].dtype in ['int64','float64'] and df[y_col].dtype in ['int64','float64']:
-        fig,ax=plt.subplots()
-        ax.scatter(df[x_col],df[y_col],alpha=0.8)
-        ax.set_title(f"{x_col} vs {y_col} Histogram graph")
-        ax.set_xlabel(f"{x_col}")
-        ax.set_ylabel(f"{y_col}")
-        canvas=FigureCanvasTkAgg(fig,master=graph)
-        canvas.draw()
-        canvas.get_tk_widget().place(x=449,y=220)
-        # else:
-        #     messagebox.showinfo("Failed","The Given column in String")
+        if df[x_col].dtype in ['int64','float64'] and df[y_col].dtype in ['int64','float64']:
+            fig,ax=plt.subplots()
+            ax.scatter(df[x_col],df[y_col],alpha=0.8)
+            ax.set_title(f"{x_col} vs {y_col} Histogram graph")
+            ax.set_xlabel(f"{x_col}")
+            ax.set_ylabel(f"{y_col}")
+            canvas=FigureCanvasTkAgg(fig,master=graph)
+            canvas.draw()
+            canvas.get_tk_widget().place(x=449,y=220)
+        else:
+            messagebox.showinfo("Failed","The Given column in String")
     except Exception as e:
         messagebox.showinfo("Failed","Select both columns first")
 
