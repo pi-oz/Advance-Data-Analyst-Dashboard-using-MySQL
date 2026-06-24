@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import sqlalchemy as sqq
 from tkinter import ttk,filedialog,messagebox,END
 import tkinter as tk
 import customtkinter as ctk
@@ -10,8 +9,6 @@ import io
 import warnings
 warnings.filterwarnings("ignore")
 
-# --------------------------------------------------------------
-# Backend
 # Global variable
 df=None
 pages={}
@@ -59,6 +56,7 @@ def show_page(name):
         event.pack_forget()
     pages[name].pack(fill="both",expand=True)
 
+# tree structure
 def treee():
     tree.delete(*tree.get_children())
     tree["column"]=list(df.columns)
@@ -69,6 +67,7 @@ def treee():
     for row in df.itertuples(index=False):
         tree.insert("","end",values=row)
 
+# to print other information about
 def show_in_bar():
     global df
     buffer=io.StringIO()
@@ -76,6 +75,7 @@ def show_in_bar():
     infoo=buffer.getvalue()
     return infoo
 
+# after load data ,data show in bars
 def display_inbars():
     # For Analysis widget
     text.delete("1.0","end")
@@ -101,6 +101,7 @@ def display_inbars():
     confimation_col.configure(values=combo2)
     stats_combo.configure(values=combo2)
 
+# load data from sql
 def load_data():
     global df,val,x,y
     try:
@@ -128,8 +129,8 @@ def line():
         selected_column=combo.get()
         if df[selected_column].dtype in ['int64','float64']:
             fig,ax=plt.subplots()
-            ax.plot(df.iloc[:, 0],df[selected_column],marker="o")
-            ax.set_title(f"{selected_column} line graph")
+            ax.plot(df.iloc[:, 0].head(15),df[selected_column].head(15),marker="o")
+            ax.set_title(f"{selected_column} line graph (top 15 values)")
             ax.set_xlabel("ID")
             ax.set_ylabel(selected_column)
             canvas=FigureCanvasTkAgg(fig,master=graph)
@@ -145,8 +146,8 @@ def pie():
         selected_column=combo.get()
         if df[selected_column].dtype in ['int64','float64']:
             fig,ax=plt.subplots()
-            ax.pie(df[selected_column],labels=df.iloc[:, 0],autopct="%1.1f%%")
-            ax.set_title(f"{selected_column} pie chart")
+            ax.pie(df[selected_column].head(15),labels=df.iloc[:, 0].head(15),autopct="%1.1f%%")
+            ax.set_title(f"{selected_column} pie chart (top 15 values)")
             canvas=FigureCanvasTkAgg(fig,master=graph)
             canvas.draw()
             canvas.get_tk_widget().place(x=449,y=220)
@@ -160,8 +161,8 @@ def histo():
         selected_column=combo.get()
         if df[selected_column].dtype in ['int64','float64']:
             fig,ax=plt.subplots()
-            ax.hist(df[selected_column],bins=30 )
-            ax.set_title(f"{selected_column} Histogram graph")
+            ax.hist(df[selected_column].head(15),bins=30 )
+            ax.set_title(f"{selected_column} Histogram graph (top 15 values)")
             ax.set_xlabel(selected_column)
             ax.set_ylabel("Frequency")
             canvas=FigureCanvasTkAgg(fig,master=graph)
@@ -177,8 +178,8 @@ def bar():
         selected_column=combo.get()
         if df[selected_column].dtype in ['int64','float64']:
             fig,ax=plt.subplots()
-            ax.bar(df.iloc[:, 0],df[selected_column])
-            ax.set_title(f"{selected_column} Line graph")
+            ax.bar(df.iloc[:, 0].head(15),df[selected_column].head(15))
+            ax.set_title(f"{selected_column} Line graph (top 15 values)")
             ax.set_xlabel("ID")
             ax.set_ylabel(selected_column)
             canvas=FigureCanvasTkAgg(fig,master=graph)
@@ -196,8 +197,8 @@ def scatter():
         y_col=y_axis.get()
         if df[x_col].dtype in ['int64','float64'] and df[y_col].dtype in ['int64','float64']:
             fig,ax=plt.subplots()
-            ax.scatter(df[x_col],df[y_col],alpha=0.8)
-            ax.set_title(f"{x_col} vs {y_col} Histogram graph")
+            ax.scatter(df[x_col].head(15),df[y_col].head(15),alpha=0.8)
+            ax.set_title(f"{x_col} vs {y_col} Histogram graph (top 15 values)")
             ax.set_xlabel(f"{x_col}")
             ax.set_ylabel(f"{y_col}")
             canvas=FigureCanvasTkAgg(fig,master=graph)
@@ -211,8 +212,7 @@ def scatter():
 def search():
     searching=inputt.get()
     if file_ext is True:
-        try:
-            
+        try:#search in MySQL
             colom=column_name.get()
             exe.execute(f"select * from {table_name.get()} where {colom}='{searching}';")
             data =exe.fetchall()
@@ -223,7 +223,7 @@ def search():
         except Exception as e:
             messagebox.showinfo("Failed","Enter valid data for search.")
     else:
-        try:
+        try:#Search in Excel
             if searching.isdigit():
                 searching=int(searching)
                 for row in df.itertuples():
@@ -303,10 +303,10 @@ def statics():
             messagebox.showinfo("Failed","The Given column  data in String")
     except Exception as e:
          messagebox.showinfo("Failed","Select column")
+
 # ----------------------------------------------------------------------------------------------------
 # Fronted
-# Load data
-# for combobox to show available tabel name
+# Load data for combobox to show available tabel name
 tables=pd.read_sql("show tables;",db)
 tables_list = tables.iloc[:, 0].tolist()
 
@@ -435,6 +435,7 @@ json=ctk.CTkButton(export,text="Json",font=default_font,command=export_json).pla
 # Side bar
 sidebar=ctk.CTkFrame(root,width=100)
 sidebar.pack(side="left",fill="y")
+
 # tabes neme
 t_names=[("MySQL","l_file"),
         ("Excel","ex_file"),
@@ -455,6 +456,4 @@ show_page("l_file")
 divider=ctk.CTkFrame(root,width=1.5,fg_color="gray")
 divider.pack(side="left",fill="y")
 root.protocol("WM_DELETE_WINDOW",on_close)
-
-# looping the window
 root.mainloop()
