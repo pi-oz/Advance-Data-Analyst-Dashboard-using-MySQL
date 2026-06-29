@@ -436,6 +436,52 @@ json=ctk.CTkButton(export,text="Json",font=default_font,command=export_json).pla
 sidebar=ctk.CTkFrame(root,width=100)
 sidebar.pack(side="left",fill="y")
 
+
+scroll_bar_for_mysqly = ttk.Scrollbar(data_page, orient="vertical", command=tree.yview)
+scroll_bar_for_mysqlx=ttk.Scrollbar(data_page,orient="horizontal",command=tree.xview)
+
+# Connect Treeview to Scrollbar
+tree.configure(yscrollcommand=scroll_bar_for_mysqly.set,xscrollcommand=scroll_bar_for_mysqlx.set)
+
+# Position widgets
+scroll_bar_for_mysqly.place(x=1074,y=1,height=598)
+scroll_bar_for_mysqlx.place(x=0,y=599,width=1090)
+
+# MySQL page scrollbar
+scroll_bar_for_mysqly=tk.Scrollbar(data_page,orient='vertical',command=textwidget.yview)
+scroll_bar_for_mysqly.place(x=1074,y=1,height=599)
+scroll_bar_for_mysqlx=tk.Scrollbar(data_page,orient='horizontal',command=textwidget.xview)
+scroll_bar_for_mysqlx.place(x=0,y=599,width=1090)
+textwidget.configure(yscrollcommand=scroll_bar_for_mysqly.set,xscrollcommand=scroll_bar_for_mysqlx.set)
+
+# Excel page - scrollbars
+scroll_bar_for_excely = tk.Scrollbar(excel_page, orient='vertical', command=textwidget.yview)
+scroll_bar_for_excely.place(x=1074, y=1, height=600)
+scroll_bar_for_excelx = tk.Scrollbar(excel_page, orient='horizontal', command=textwidget.xview)
+scroll_bar_for_excelx.place(x=0, y=600, width=1090)
+textwidget.configure(yscrollcommand=scroll_bar_for_excely.set, xscrollcommand=scroll_bar_for_excelx.set)
+
+# Analysis page - scrollbars
+scroll_bar_for_analysisx = tk.Scrollbar(graph, orient='horizontal', command=text.xview)
+scroll_bar_for_analysisx.place(x=5, y=680, width=440)
+scroll_bar_for_analysisy = tk.Scrollbar(graph, orient='vertical', command=text.yview)
+scroll_bar_for_analysisy.place(x=442, y=220, height=460)
+text.configure(yscrollcommand=scroll_bar_for_analysisy.set, xscrollcommand=scroll_bar_for_analysisx.set)
+
+# Search page - scrollbars
+scroll_bar_for_searchy = tk.Scrollbar(clean, orient='vertical', command=text2.yview)
+scroll_bar_for_searchy.place(x=1076,y=108,height=574)
+scroll_bar_for_searchx = tk.Scrollbar(clean, orient='horizontal', command=text2.xview)
+scroll_bar_for_searchx.place(x=1,y=680,width=1080)
+text2.configure(yscrollcommand=scroll_bar_for_searchy.set, xscrollcommand=scroll_bar_for_searchx.set)
+
+# Edit page - scrollbars
+scroll_bar_for_edity = tk.Scrollbar(E, orient='vertical', command=text3.yview)
+scroll_bar_for_edity.pack(side='right', fill='y')
+scroll_bar_for_editx = tk.Scrollbar(E, orient='horizontal', command=text3.xview)
+scroll_bar_for_editx.place(x=542,y=680,width=544)
+text3.configure(yscrollcommand=scroll_bar_for_edity.set, xscrollcommand=scroll_bar_for_editx.set)
+
 # tabes neme
 t_names=[("MySQL","l_file"),
         ("Excel","ex_file"),
